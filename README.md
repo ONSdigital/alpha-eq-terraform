@@ -14,7 +14,8 @@ key in the file, adding your email address that you use to login with.
 
 4. Run `terraform plan -var 'env=testdeploy'` to check the output of terraform.
 
-5. Run `terraform apply -var 'env=DEPLOY_ENV'` to create your infrastructure
+5. Run `terraform apply -var 'env=testdeploy'` to create your infrastructure
 environment.
 
-*Note* To destroy an environment, run `terraform destroy -var 'env=DEPLOY_ENV'`
+*Note* Yor heroku account will need a credit card attached in order to install the database add-on, but you will not be billed'
+*Note* To destroy an environment, run `terraform destroy -var 'env=testdeploy'`
