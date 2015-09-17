@@ -9,5 +9,6 @@ git clone $SRUNNER_REPO_URL
 cd ./eq-survey-runner
 git fetch
 git checkout $BRANCH
+git pull
 heroku git:remote -a $1
 git push heroku $BRANCH:master
