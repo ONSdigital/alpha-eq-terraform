@@ -21,7 +21,7 @@ resource "heroku_app" "eq_author" {
 # Create a database, and configure the app to use it
 resource "heroku_addon" "database" {
   app = "${heroku_app.eq_author.name}"
-  plan = "heroku-postgresql:hobby-basic"
+  plan = "heroku-postgresql:hobby-dev"
 }
 
 # Create our executor
