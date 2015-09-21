@@ -17,5 +17,5 @@ key in the file, adding your email address that you use to login with.
 5. Run `terraform apply -var 'env=testdeploy'` to create your infrastructure
 environment.
 
-*Note* Yor heroku account will need a credit card attached in order to install the database add-on, but you will not be billed'
+*Note* Yor heroku account will need a credit card attached in order to install the database add-on, but you will not be billed.  Also you will need to have run `heroku local` for one of the projects before the heroku deployment will succeed.
 *Note* To destroy an environment, run `terraform destroy -var 'env=testdeploy'`
