@@ -10,7 +10,8 @@ resource "heroku_app" "eq_author" {
     region = "eu"
 
     config_vars {
-        FOOBAR = "baz"
+        # Kludge to get around cyclic issue. BEWARE. @TOFIX
+        SURVEY_RUNNER_URL = "https://${var.env}-ons-eq-surveyrunner.herokuapp.com/"
     }
     provisioner "local-exec" {
        command = "./deploy_author.sh ${var.env}-ons-eq-author"
