@@ -1,0 +1,68 @@
+[
+  {
+    "name": "eq-survey-runner",
+    "image": "warrenmethods/eq-survey-runner",
+    "cpu": 10,
+    "memory": 256,
+    "essential": true,
+    "links": ["cassandra"],
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 8080
+      }
+    ]
+  },
+  {
+    "name": "nginx",
+    "image": "warrenmethods/eq-terraform-nginx",
+    "cpu": 10,
+    "memory": 128,
+    "essential": true,
+    "links": ["eq-survey-runner"],
+    "portMappings": [
+      {
+        "containerPort": 8082,
+        "hostPort": 8082
+      }
+    ]
+  },
+  {
+    "name": "cassandra",
+    "image": "spotify/cassandra",
+    "cpu": 10,
+    "memory": 128,
+    "essential": true,
+     "portMappings": [
+      {
+        "containerPort": 7199,
+        "hostPort": 7199
+      },
+      {
+        "containerPort": 7000,
+        "hostPort": 7000
+      } ,
+      {
+        "containerPort": 7001,
+        "hostPort": 7001
+      } ,
+      {
+        "containerPort": 9160,
+        "hostPort": 9160
+      } ,
+      {
+        "containerPort": 9042,
+        "hostPort": 9042
+      } ,
+      {
+        "containerPort": 8012,
+        "hostPort": 8012
+      } ,
+      {
+        "containerPort": 61621,
+        "hostPort": 61621
+      }
+
+    ]
+  }
+]
