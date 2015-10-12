@@ -1,7 +1,7 @@
 [
   {
     "name": "eq-survey-runner",
-    "image": "warrenmethods/eq-survey-runner",
+    "image": "onsdigital/eq-survey-runner",
     "cpu": 10,
     "memory": 512,
     "essential": true,
@@ -15,7 +15,7 @@
   },
   {
     "name": "nginx",
-    "image": "warrenmethods/eq-terraform-nginx",
+    "image": "onsdigital/eq-terraform",
     "cpu": 10,
     "memory": 256,
     "essential": true,
