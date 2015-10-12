@@ -25,9 +25,9 @@ resource "aws_autoscaling_group" "ecs" {
   max_size             = 10
   desired_capacity     = 1
 
-  lifecycle {
-      create_before_destroy = true
-  }
+#  lifecycle {
+#      create_before_destroy = true
+#  }
 }
 
 
@@ -49,7 +49,7 @@ resource "aws_ecs_service" "eq-survey-runner" {
 
 resource "aws_ecs_task_definition" "eq-survey-task" {
   family = "deq-task"
-  container_definitions = "${file("task-definitions/eq-survey-runner.json")}"
+  container_definitions = "${file("aws/task-definitions/eq-survey-runner.json")}"
 
 }
 
@@ -87,26 +87,26 @@ resource "aws_elb" "ecs_lb" {
 /* ecs iam role */
 resource "aws_iam_role" "ecs_role" {
   name               = "ecsRole"
-  assume_role_policy = "${file("policies/ecs-role.json")}"
+  assume_role_policy = "${file("aws/policies/ecs-role.json")}"
 }
 
 /* ecs load balancer role policy */
 resource "aws_iam_role_policy" "ecs_service_role_policy" {
   name     = "ecsServiceRolePolicy"
-  policy   = "${file("policies/ecs-service-role-policy.json")}"
+  policy   = "${file("aws/policies/ecs-service-role-policy.json")}"
   role     = "${aws_iam_role.ecs_role.id}"
 }
 
 /* ec2 container instance role policy */
 resource "aws_iam_role_policy" "ecs_instance_role_policy" {
   name     = "ecsInstanceRolePolicy"
-  policy   = "${file("policies/ecs-instance-role-policy.json")}"
+  policy   = "${file("aws/policies/ecs-instance-role-policy.json")}"
   role     = "${aws_iam_role.ecs_role.id}"
 }
 
 /* Profile for auto-scaling launch configuration.*/
  resource "aws_iam_instance_profile" "ecs" {
-  name = "ecs-instance-profile"
+  name = "ecsInstanceProfile"
   path = "/"
   roles = ["${aws_iam_role.ecs_role.name}"]
 }
@@ -136,5 +136,5 @@ resource "aws_security_group" "ecs" {
 
 
 output "SurveyRunner" {
-    value = "${aws_elb.ecs_lb.dns_name}"
+    value = "http://${aws_elb.ecs_lb.dns_name}"
 }

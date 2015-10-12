@@ -3,7 +3,7 @@
     "name": "eq-survey-runner",
     "image": "warrenmethods/eq-survey-runner",
     "cpu": 10,
-    "memory": 256,
+    "memory": 512,
     "essential": true,
     "links": ["cassandra"],
     "portMappings": [
@@ -17,7 +17,7 @@
     "name": "nginx",
     "image": "warrenmethods/eq-terraform-nginx",
     "cpu": 10,
-    "memory": 128,
+    "memory": 256,
     "essential": true,
     "links": ["eq-survey-runner"],
     "portMappings": [
@@ -31,7 +31,7 @@
     "name": "cassandra",
     "image": "spotify/cassandra",
     "cpu": 10,
-    "memory": 128,
+    "memory": 256,
     "essential": true,
      "portMappings": [
       {

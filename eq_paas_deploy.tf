@@ -11,7 +11,7 @@ resource "heroku_app" "eq_author" {
 
     config_vars {
         # Kludge to get around cyclic issue. BEWARE. @TOFIX
-        SURVEY_RUNNER_URL = "https://${var.env}-ons-eq-surveyrunner.herokuapp.com/"
+        SURVEY_RUNNER_URL ="http://${aws_elb.ecs_lb.dns_name}/"
     }
     provisioner "local-exec" {
        command = "./deploy_author.sh ${var.env}-ons-eq-author"
@@ -25,24 +25,11 @@ resource "heroku_addon" "database" {
   plan = "heroku-postgresql:hobby-dev"
 }
 
-# Create our executor
-resource "heroku_app" "eq_surveyrunner" {
-    name = "${var.env}-ons-eq-surveyrunner"
-    region = "eu"
-
-    config_vars {
-        SURVEY_REGISTRY_URL = "${heroku_app.eq_author.web_url}"
-    }
-    # Use local provisioner to clone and push our app.
-    provisioner "local-exec" {
-       command = "./deploy_surveyrunner.sh ${var.env}-ons-eq-surveyrunner"
-   }
-}
 
 
-output "SurveyRunner" {
-    value = "${heroku_app.eq_surveyrunner.web_url}"
-}
+#output "SurveyRunner" {
+#    value = "${heroku_app.eq_surveyrunner.web_url}"
+#}
 output "AuthorTool" {
     value = "${heroku_app.eq_author.web_url}"
 }
