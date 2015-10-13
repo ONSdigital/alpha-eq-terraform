@@ -10,7 +10,6 @@ resource "heroku_app" "eq_author" {
     region = "eu"
 
     config_vars {
-        # Kludge to get around cyclic issue. BEWARE. @TOFIX
         SURVEY_RUNNER_URL ="http://${aws_elb.ecs_lb.dns_name}/"
     }
     provisioner "local-exec" {

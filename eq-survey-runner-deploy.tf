@@ -4,36 +4,34 @@ provider "aws" {
     region = "eu-west-1"
 }
 
-resource "aws_ecs_cluster" "default" {
-  name = "default"
+resource "aws_ecs_cluster" "ecs-cluster" {
+  name = "${var.env}"
 }
 
-resource "aws_launch_configuration" "ecs" {
+resource "aws_launch_configuration" "ecs-lc" {
+  name                 = "ecs-lc-${var.env}"
   image_id             = "ami-6b12271c"
   instance_type        = "${var.aws_instance_type}"
   key_name             = "${var.aws_key_pair}"
   security_groups      = ["${aws_security_group.ecs.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.ecs.name}"
-  user_data            = "#!/bin/bash\necho ECS_CLUSTER=default > /etc/ecs/ecs.config"
+  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.env} > /etc/ecs/ecs.config"
 }
 
-resource "aws_autoscaling_group" "ecs" {
-  name                 = "ecs-asg"
+resource "aws_autoscaling_group" "ecs-ag" {
+  name                 = "ecs-asg-${var.env}"
   availability_zones   = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  launch_configuration = "${aws_launch_configuration.ecs.name}"
+  launch_configuration = "${aws_launch_configuration.ecs-lc.name}"
   min_size             = 1
   max_size             = 10
   desired_capacity     = 1
 
-#  lifecycle {
-#      create_before_destroy = true
-#  }
 }
 
 
 resource "aws_ecs_service" "eq-survey-runner" {
-  name = "eq-survey-runner"
-  cluster = "${aws_ecs_cluster.default.id}"
+  name = "eq-survey-runner-${var.env}"
+  cluster = "${aws_ecs_cluster.ecs-cluster.id}"
   task_definition = "${aws_ecs_task_definition.eq-survey-task.arn}"
   desired_count = 1
 
@@ -48,14 +46,14 @@ resource "aws_ecs_service" "eq-survey-runner" {
 }
 
 resource "aws_ecs_task_definition" "eq-survey-task" {
-  family = "deq-task"
+  family = "deq-task-${var.env}"
   container_definitions = "${file("aws/task-definitions/eq-survey-runner.json")}"
 
 }
 
 # Create a new load balancer
 resource "aws_elb" "ecs_lb" {
-  name = "eq-survey-runner-elb"
+  name = "eq-survey-runner-elb-${var.env}"
   availability_zones = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 
   listener {
@@ -79,40 +77,40 @@ resource "aws_elb" "ecs_lb" {
   connection_draining_timeout = 400
 
   tags {
-    Name = "survey-runner-elb"
+    Name = "survey-runner-elb-${var.env}"
   }
 }
 
 
 /* ecs iam role */
 resource "aws_iam_role" "ecs_role" {
-  name               = "ecsRole"
+  name               = "ecs-role-${var.env}"
   assume_role_policy = "${file("aws/policies/ecs-role.json")}"
 }
 
 /* ecs load balancer role policy */
 resource "aws_iam_role_policy" "ecs_service_role_policy" {
-  name     = "ecsServiceRolePolicy"
+  name     = "ecs-service-role-policy-${var.env}"
   policy   = "${file("aws/policies/ecs-service-role-policy.json")}"
   role     = "${aws_iam_role.ecs_role.id}"
 }
 
 /* ec2 container instance role policy */
 resource "aws_iam_role_policy" "ecs_instance_role_policy" {
-  name     = "ecsInstanceRolePolicy"
+  name     = "ecs-instance-role-policy-${var.env}"
   policy   = "${file("aws/policies/ecs-instance-role-policy.json")}"
   role     = "${aws_iam_role.ecs_role.id}"
 }
 
 /* Profile for auto-scaling launch configuration.*/
  resource "aws_iam_instance_profile" "ecs" {
-  name = "ecsInstanceProfile"
+  name = "ecsInstance-profile-${var.env}"
   path = "/"
   roles = ["${aws_iam_role.ecs_role.name}"]
 }
 
 resource "aws_security_group" "ecs" {
-  name = "allow_all"
+  name = "allow_all-${var.env}"
   description = "Allow all inbound traffic"
 
   ingress {
@@ -130,7 +128,7 @@ resource "aws_security_group" "ecs" {
   }
 
   tags {
-    Name = "ecs-sg"
+    Name = "ecs-sg-${var.env}"
   }
 }
 
