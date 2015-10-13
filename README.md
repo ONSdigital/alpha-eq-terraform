@@ -19,3 +19,18 @@ environment.
 
 *Note* Yor heroku account will need a credit card attached in order to install the database add-on, but you will not be billed.  Also you will need to have run `heroku local` at least once for one of the projects before the heroku deployment will succeed. This is needed to set up the local heroku authentication machanism.
 *Note* To destroy an environment, run `terraform destroy -var 'env=testdeploy'`
+
+
+*Note* AWS error
+If you see this error, then it is most likely a timing issue with Role/Policy propagation. Run terraform apply again and it should then succeed
+Error applying plan:
+
+1 error(s) occurred:
+
+* aws_ecs_service.eq-survey-runner: InvalidParameterException: Unable to assume role and validate the listeners configured on your load balancer.  Please verify the role being passed has the proper permissions.
+	status code: 400, request id: []
+
+Terraform does not automatically rollback in the face of errors.
+Instead, your Terraform state file has been partially updated with
+any resources that successfully completed. Please address the error
+above and apply again to incrementally change your infrastructure.

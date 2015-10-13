@@ -1,2 +1,6 @@
 heroku_email_account = "xxxx@xxxx"
 heroku_api_key = "XXXXXXXXXXXX"
+aws_access_key="XXXXXXXXXXXX"
+aws_secret_key="XXXXXXXXXXXX"
+aws_key_pair="digital-eq-keypair"
+aws_instance_type="t2.micro"
