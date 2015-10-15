@@ -45,9 +45,17 @@ resource "aws_ecs_service" "eq-survey-runner" {
   }
 }
 
+resource "template_file" "survey_runner_task" {
+  filename = "aws/task-definitions/eq-survey-runner.json"
+
+  vars {
+    survey_registry_url   = "${heroku_app.eq_author.web_url}"
+  }
+}
+
 resource "aws_ecs_task_definition" "eq-survey-task" {
   family = "deq-task-${var.env}"
-  container_definitions = "${file("aws/task-definitions/eq-survey-runner.json")}"
+  container_definitions = "${template_file.survey_runner_task.rendered}"
 
 }
 

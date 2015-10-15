@@ -6,6 +6,12 @@
     "memory": 512,
     "essential": true,
     "links": ["cassandra"],
+    "environment": [
+      {
+        "name": "SURVEY_REGISTRY_URL",
+        "value": "${survey_registry_url}"
+      }
+    ],
     "portMappings": [
       {
         "containerPort": 8080,
