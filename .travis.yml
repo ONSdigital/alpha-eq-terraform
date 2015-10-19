@@ -1,0 +1,16 @@
+language: generic
+sudo: required
+env:
+  global:
+    - PATH="$HOME/terraform:$PATH"
+
+before_install:
+  - mkdir $HOME/terraform
+  - cd $HOME/terraform
+  - curl -OL https://dl.bintray.com/mitchellh/terraform/terraform_0.6.4_linux_amd64.zip
+install:
+  - unzip terraform_0.6.4_linux_amd64.zip
+before_script:
+  - cd $HOME/build/ONSdigital/eq-terraform
+script:
+  - terraform plan -var 'env=nightly-build'
