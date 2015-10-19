@@ -1,0 +1,8 @@
+language: generic
+
+apt:
+  packages:
+  - unzip
+
+script:
+- terraform plan -var 'env=nightly'
