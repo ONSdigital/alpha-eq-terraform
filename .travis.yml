@@ -1,16 +1,15 @@
 language: generic
-
-apt:
-  packages:
-  - unzip
-
+sudo: required
 env:
   global:
+    - PATH="$HOME/terraform:$PATH"
 
 before_install:
-	- mkdir $HOME/terraform
-	- cd $HOME/terraform
-	- curl https://dl.bintray.com/mitchellh/terraform/terraform_0.6.4_linux_amd64.zip
+  - sudo apt-get install unzip
+  - mkdir $HOME/terraform
+  - cd $HOME/terraform
+  - curl https://dl.bintray.com/mitchellh/terraform/terraform_0.6.4_linux_amd64.zip
 install:
-	- unzip terraform_0.6.4_linux_amd64.zip
-
+  - unzip terraform_0.6.4_linux_amd64.zip
+script:
+  - terraform plan -var 'env=nightly-build'
