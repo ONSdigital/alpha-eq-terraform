@@ -11,6 +11,7 @@ before_install:
 install:
   - unzip terraform_0.6.4_linux_amd64.zip
 before_script:
-  - cd $HOME
+  - ls -lR $HOME
+  - cd $HOME/eq-terraform
 script:
   - terraform plan -var 'env=nightly-build'
