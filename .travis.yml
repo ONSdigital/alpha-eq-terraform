@@ -14,4 +14,4 @@ install:
 before_script:
 - cd $HOME/build/ONSdigital/eq-terraform
 script:
-- terraform plan -var 'env=nightly-build'
+- terraform plan -var 'env=travis'
