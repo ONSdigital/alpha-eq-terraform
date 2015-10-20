@@ -6,7 +6,6 @@ apt:
 
 env:
   global:
-  - PATH="$HOME/terraform:$PATH"
 
 before_install:
 	- mkdir $HOME/terraform
