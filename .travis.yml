@@ -10,5 +10,7 @@ before_install:
   - curl -OL https://dl.bintray.com/mitchellh/terraform/terraform_0.6.4_linux_amd64.zip
 install:
   - unzip terraform_0.6.4_linux_amd64.zip
+before_script:
+  - cd $HOME
 script:
   - terraform plan -var 'env=nightly-build'
