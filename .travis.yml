@@ -7,15 +7,22 @@ env:
   - secure: yD0hAuHrQCpcBdLCWk8YrpvsjpbvemXyQ/b1Ni0K/d46GTu6k4gR/5fORyOoLPNV9F5OCiUhlZnJWO+FEaJug9O8SVcY0nnlRWQke3jQRtfL+MrGwg4IMg3X9mumnlPWKet3FLW8wXwGCJBcRDvNg0QPyEQJX0JgWEum6D0b+VU/qJsDp6Sy9e9zCYXtawfi2GK2Z8zMisj4c0+dgz5806eq5PxQzbK+DJqv/0vzfIBNS+C+rGcXIVaGmKJyhz9cRzEDNOHmc9/B+gqhEZWQWeTA7pyEPaEVR8B5doWeh17nEOofeQjhjSfONTCBjR2k28upQS2pcGctnabqbyy0Ep9MoTZ6yafHuXu3S3kFzvqf4YMOlKInd6hr1aNl5iDLjvFzqMXoS4zEHsEjy+AiKa0E2Hp/C/fGY/wKP/tNmYQb+h5EBnPJ5aHRoyeyvLu2fIpKo8u3KnhL8ZNdP5Tz15GWPsFhQ/g4zzYoHd0AVGZOh0HoJsKxWNHd4JlLbUV+/CZyquE//n6Lz4A0PLsZw5LJ4LoDTVHNNl7lEoUtjH6sqGeFS4jMeSmD3QYYy9KJKUlOvVQ90VsEdJcvz8uTrcC0KKcNquFOnofq8Pa1/qva8q/82zV9JW+wQ0mQJ7BUqFeYWwq6I38v9SvPSWwo3jMqJlu7kcAndBVI3YflTmU=
   - AWS_DEFAULT_REGION="eu-west-1"
 before_install:
-- openssl aes-256-cbc -K $encrypted_d6aa5ddaab90_key -iv $encrypted_d6aa5ddaab90_iv
+- openssl version
+- openssl aes-256-cbc -K $encrypted_5e8d8e67061d_key -iv $encrypted_5e8d8e67061d_iv
+  -in netrc.enc -out netrc -d
+- openssl aes-256-cbc -K $encrypted_5e8d8e67061d_key -iv $encrypted_5e8d8e67061d_iv
   -in terraform.tfvars.enc -out terraform.tfvars -d
+- mv netrc $HOME/.netrc
+- cd $HOME
 - mkdir $HOME/terraform
 - cd $HOME/terraform
 - curl -OL https://dl.bintray.com/mitchellh/terraform/terraform_0.6.4_linux_amd64.zip
 install:
 - unzip terraform_0.6.4_linux_amd64.zip
+- wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 before_script:
 - cd $HOME/build/ONSdigital/eq-terraform
+- heroku
 script:
 - terraform remote config -backend=S3 -backend-config="bucket=travis-ci-terraform-state"
   -backend-config="key=travis" -backend-config="region=eu-west-1"
