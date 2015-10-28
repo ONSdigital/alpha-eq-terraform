@@ -24,11 +24,12 @@ resource "heroku_addon" "database" {
   plan = "heroku-postgresql:hobby-dev"
 }
 
+# Associate a custom domain
+resource "heroku_domain" "default" {
+    app = "${heroku_app.eq_author.name}"
+    hostname = "${aws_route53_record.author.fqdn}"
+}
 
-
-#output "SurveyRunner" {
-#    value = "${heroku_app.eq_surveyrunner.web_url}"
-#}
-output "AuthorTool" {
-    value = "${heroku_app.eq_author.web_url}"
+output "AuthorURL" {
+    value = "http://${var.env}-author.eq.ons.digital/"
 }

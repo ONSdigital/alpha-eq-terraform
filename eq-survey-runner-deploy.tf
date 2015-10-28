@@ -141,6 +141,6 @@ resource "aws_security_group" "ecs" {
 }
 
 
-output "SurveyRunner" {
-    value = "http://${aws_elb.ecs_lb.dns_name}"
+output "SurveyURL" {
+    value = "http://${var.env}-survey.eq.ons.digital/"
 }

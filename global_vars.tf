@@ -24,3 +24,12 @@ variable "aws_key_pair" {
 variable "aws_instance_type" {
     description = "Amazon instance type to spin up"
 }
+variable "dns_zone_id" {
+  description = "Amazon Route53 DNS zone identifier"
+  default = "Z34V7YH0QGSCUI"
+}
+
+variable "dns_zone_name" {
+  description = "Amazon Route53 DNS zone name"
+  default     = "eq.ons.digital."
+}
