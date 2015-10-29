@@ -10,7 +10,7 @@ resource "heroku_app" "eq_author" {
     region = "eu"
 
     config_vars {
-        SURVEY_RUNNER_URL ="http://${aws_elb.ecs_lb.dns_name}/"
+        SURVEY_RUNNER_URL = "${aws_route53_record.runner.fqdn}"
     }
     provisioner "local-exec" {
        command = "./deploy_author.sh ${var.env}-ons-eq-author"
