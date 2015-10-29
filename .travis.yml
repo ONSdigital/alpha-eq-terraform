@@ -27,3 +27,4 @@ script:
 - terraform remote pull
 - terraform destroy -var 'env=travis' -force
 - terraform apply -var 'env=travis'
+- terraform remote push
