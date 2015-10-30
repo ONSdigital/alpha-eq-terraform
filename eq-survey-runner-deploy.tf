@@ -49,7 +49,7 @@ resource "template_file" "survey_runner_task" {
   filename = "aws/task-definitions/eq-survey-runner.json"
 
   vars {
-    survey_registry_url   = "${aws_route53_record.author.fqdn}"
+    survey_registry_url   = "${heroku_app.eq_author.web_url}"
   }
 }
 
