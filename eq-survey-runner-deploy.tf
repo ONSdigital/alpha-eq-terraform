@@ -117,14 +117,15 @@ resource "aws_iam_role_policy" "ecs_instance_role_policy" {
   roles = ["${aws_iam_role.ecs_role.name}"]
 }
 
+/* Only allow ssh in */
 resource "aws_security_group" "ecs" {
   name = "allow_all-${var.env}"
   description = "Allow all inbound traffic"
 
   ingress {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
+      from_port = 22
+      to_port = 22
+      protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -137,6 +138,29 @@ resource "aws_security_group" "ecs" {
 
   tags {
     Name = "ecs-sg-${var.env}"
+  }
+}
+
+/* ELB Security group */
+resource "aws_security_group" "ecs-elb" {
+  name = "allow_web-${var.env}"
+  description = "Allow all inbound traffic"
+
+  ingress {
+      to_port = 80
+      protocol = ""
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name = "ecs-sg-elb-${var.env}"
   }
 }
 
