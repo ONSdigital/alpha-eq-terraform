@@ -15,7 +15,7 @@ resource "aws_launch_configuration" "ecs-lc" {
   key_name             = "${var.aws_key_pair}"
   security_groups      = ["${aws_security_group.ecs.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.ecs.name}"
-  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.env} > /etc/ecs/ecs.config"
+  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.env} > /etc/ecs/ecs.config; \nmkdir /home/ec2-user/.aws; \necho '[default]\naws_access_key_id = ${var.aws_access_key}\naws_secret_access_key = ${var.aws_secret_key}' > /home/ec2-user/.aws/credentials"
 }
 
 resource "aws_autoscaling_group" "ecs-ag" {
