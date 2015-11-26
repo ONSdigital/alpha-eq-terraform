@@ -73,10 +73,10 @@ resource "aws_elb" "ecs_lb" {
 
   health_check {
     healthy_threshold = 2
-    unhealthy_threshold = 2
-    timeout = 3
+    unhealthy_threshold = 10
+    timeout = 60
     target = "HTTP:8082/"
-    interval = 30
+    interval = 300
   }
 
   cross_zone_load_balancing = true
@@ -89,6 +89,12 @@ resource "aws_elb" "ecs_lb" {
   }
 }
 
+resource "aws_lb_cookie_stickiness_policy" "ecs_lb_sticky" {
+      name = "eq-survey-runner-elb-sticky-session-${var.env}"
+      load_balancer = "${aws_elb.ecs_lb.id}"
+      lb_port = 80
+      cookie_expiration_period = 600
+}
 
 /* ecs iam role */
 resource "aws_iam_role" "ecs_role" {

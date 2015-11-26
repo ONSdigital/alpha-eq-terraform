@@ -2,7 +2,7 @@
   {
     "name": "eq-survey-runner",
     "image": "onsdigital/eq-survey-runner",
-    "cpu": 100,
+    "cpu": 340,
     "memory": 512,
     "essential": true,
     "links": ["cassandra"],
@@ -22,8 +22,8 @@
   {
     "name": "nginx",
     "image": "onsdigital/eq-terraform",
-    "cpu": 100,
-    "memory": 256,
+    "cpu": 340,
+    "memory": 512,
     "essential": true,
     "links": ["eq-survey-runner"],
     "portMappings": [
@@ -36,8 +36,8 @@
   {
     "name": "cassandra",
     "image": "spotify/cassandra",
-    "cpu": 100,
-    "memory": 256,
+    "cpu": 340,
+    "memory": 512,
     "essential": true,
      "portMappings": [
       {
