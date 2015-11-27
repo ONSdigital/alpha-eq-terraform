@@ -15,7 +15,7 @@ resource "aws_launch_configuration" "ecs-lc" {
   key_name             = "${var.aws_key_pair}"
   security_groups      = ["${aws_security_group.ecs.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.ecs.name}"
-  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.env} > /etc/ecs/ecs.config; \nmkdir /home/ec2-user/.aws; \necho '[default]\naws_access_key_id = ${var.aws_access_key}\naws_secret_access_key = ${var.aws_secret_key}' > /home/ec2-user/.aws/credentials"
+  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.env} > /etc/ecs/ecs.config; \nmkdir /home/ec2-user/.aws; \necho '[default]\naws_access_key_id = ${var.aws_access_key}\naws_secret_access_key = ${var.aws_secret_key}' > /home/ec2-user/.aws/credentials; \necho '[default]\nregion = eu-west-1' > /home/ec2-user/.aws/config"
 }
 
 resource "aws_autoscaling_group" "ecs-ag" {
@@ -56,7 +56,10 @@ resource "template_file" "survey_runner_task" {
 resource "aws_ecs_task_definition" "eq-survey-task" {
   family = "deq-task-${var.env}"
   container_definitions = "${template_file.survey_runner_task.rendered}"
-
+  volume {
+    name = "awscredentials"
+    host_path = "/home/ec2-user/.aws"
+  }
 }
 
 # Create a new load balancer
