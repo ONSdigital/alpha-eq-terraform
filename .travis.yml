@@ -26,5 +26,5 @@ script:
   -backend-config="key=travis" -backend-config="region=eu-west-1"
 - terraform remote pull
 - terraform destroy -var 'env=travis' -force
-- terraform apply -var 'env=travis'
+#- terraform apply -var 'env=travis'
 - terraform remote push
